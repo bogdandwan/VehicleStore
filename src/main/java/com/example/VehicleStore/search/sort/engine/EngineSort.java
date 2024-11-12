@@ -1,0 +1,21 @@
+package com.example.VehicleStore.search.sort.engine;
+
+public enum EngineSort {
+    FUEL_ASC,
+    FUEL_DESC,
+    DISPLACEMENT_ASC,
+    DISPLACEMENT_DESC,
+    KW_POWER_ASC,
+    KW_POWER_DESC,
+    HORSE_POWER_ASC,
+    HORSE_POWER_DESC,
+    EMISSION_STANDARD_ASC,
+    EMISSION_STANDARD_DESC,
+    NUMBER_OF_CYLINDERS_ASC,
+    NUMBER_OF_CYLINDERS_DESC,
+    FUEL_CONSUMPTION_ASC,
+    FUEL_CONSUMPTION_DESC,
+    ID_ASC,
+    ID_DESC
+}
+
