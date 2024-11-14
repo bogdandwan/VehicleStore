@@ -10,7 +10,6 @@ import com.example.VehicleStore.search.moto.MotoModelSearch;
 import com.example.VehicleStore.search.sort.moto.MotoModelSort;
 import com.example.VehicleStore.service.service.moto.MotoBrandService;
 import com.example.VehicleStore.service.service.moto.MotoModelService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

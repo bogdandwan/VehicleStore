@@ -1,4 +1,4 @@
-package com.example.VehicleStore.dto;
+package com.example.VehicleStore.dto.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

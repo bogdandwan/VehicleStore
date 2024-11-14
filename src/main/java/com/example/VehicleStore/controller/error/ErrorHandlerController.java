@@ -1,6 +1,6 @@
 package com.example.VehicleStore.controller.error;
 
-import com.example.VehicleStore.dto.ApiError;
+import com.example.VehicleStore.dto.error.ApiError;
 import com.example.VehicleStore.exceptions.ClientErrorException;
 import com.example.VehicleStore.exceptions.ForbiddenException;
 import com.example.VehicleStore.exceptions.NotFoundException;

@@ -29,7 +29,6 @@ public class CarBrand {
     @OneToMany(mappedBy = "carBrand", cascade = CascadeType.ALL)
     private List<CarModel> carModels;
 
-
     @OneToMany(mappedBy = "carBrand", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Car> cars;
 

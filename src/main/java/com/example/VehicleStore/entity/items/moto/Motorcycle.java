@@ -5,11 +5,13 @@ import com.example.VehicleStore.entity.enums.Condition;
 import com.example.VehicleStore.entity.items.moto.enums.Seats;
 import com.example.VehicleStore.entity.items.moto.enums.Transmission;
 import com.example.VehicleStore.entity.items.moto.enums.TypeBodyWork;
+import com.example.VehicleStore.entity.rental.Rental;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "motorcycle")
@@ -66,6 +68,9 @@ public class Motorcycle {
 
     @Column(name = "available", nullable = false)
     private Boolean available;
+
+    @OneToMany(mappedBy = "motorcycle", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Rental> rentals;
 
     @Column(name = "deletion_time")
     private LocalDateTime deletionTime;

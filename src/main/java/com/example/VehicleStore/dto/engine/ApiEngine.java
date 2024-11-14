@@ -1,4 +1,4 @@
-package com.example.VehicleStore.dto;
+package com.example.VehicleStore.dto.engine;
 
 import com.example.VehicleStore.dto.car.ApiCar;
 import com.example.VehicleStore.entity.items.engine.Engine;

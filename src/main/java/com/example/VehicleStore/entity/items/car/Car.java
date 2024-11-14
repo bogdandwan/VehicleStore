@@ -4,11 +4,13 @@ import com.example.VehicleStore.entity.enums.Drivetrain;
 import com.example.VehicleStore.entity.items.engine.Engine;
 import com.example.VehicleStore.entity.enums.Condition;
 import com.example.VehicleStore.entity.items.car.enums.*;
+import com.example.VehicleStore.entity.rental.Rental;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "car")
@@ -77,6 +79,9 @@ public class Car {
 
     @Column(name = "available", nullable = false)
     private Boolean available;
+
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Rental> rentals;
 
     @Column(name = "deletion_time")
     private LocalDateTime deletionTime;

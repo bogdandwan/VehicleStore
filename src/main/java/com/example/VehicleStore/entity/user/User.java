@@ -1,6 +1,7 @@
 package com.example.VehicleStore.entity.user;
 
 
+import com.example.VehicleStore.entity.rental.Rental;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -50,6 +51,9 @@ public class User implements UserDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Rental> rentals;
 
 
     @Column(name = "deletion_time")

@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,7 @@ public class MotoBrandController {
         if (apiMotoBrand.getId() != null) {
             motoBrand = motoBrandService.findById(apiMotoBrand.getId());
             if (motoBrand == null) {
-                throw new NotFoundException("MotoBrand not found");
+                throw new NotFoundException("Moto Brand not found");
             }
         } else {
             motoBrand = new MotoBrand();
@@ -55,7 +56,7 @@ public class MotoBrandController {
             }).collect(Collectors.toList());
             motoBrand.setMotoModels(motoModels);
         } else {
-            throw new ValidationException("Brand can't be empty");
+            motoBrand.setMotoModels(new ArrayList<>());
         }
 
         motoBrandService.save(motoBrand);

@@ -1,6 +1,6 @@
 package com.example.VehicleStore.dto.moto;
 
-import com.example.VehicleStore.dto.ApiEngine;
+import com.example.VehicleStore.dto.engine.ApiEngine;
 import com.example.VehicleStore.entity.enums.Condition;
 import com.example.VehicleStore.entity.items.moto.Motorcycle;
 import com.example.VehicleStore.entity.items.moto.enums.Seats;
