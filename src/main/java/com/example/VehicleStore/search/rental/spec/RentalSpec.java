@@ -1,5 +1,6 @@
 package com.example.VehicleStore.search.rental.spec;
 
+import com.example.VehicleStore.entity.enums.PaymentMethod;
 import com.example.VehicleStore.entity.items.car.Car;
 import com.example.VehicleStore.entity.items.moto.Motorcycle;
 import com.example.VehicleStore.entity.rental.Rental;
@@ -52,7 +53,7 @@ public class RentalSpec implements Specification<Rental> {
         if (search.getReturnDate() != null){
             predicates.add(criteriaBuilder.equal(root.get("returnDate"), search.getReturnDate()));
         }
-        if (search.getRentalPriceTo() != null){
+        if (search.getReturnDateTo() != null){
             predicates.add(criteriaBuilder.lessThan(root.get("returnDate"), search.getReturnDateTo()));
         }
         if (search.getReturnDateFrom() != null){
@@ -86,6 +87,24 @@ public class RentalSpec implements Specification<Rental> {
         if (search.getMotoYear() != null){
             Join<Rental, Motorcycle> motoJoin = root.join("motorcycle", JoinType.LEFT);
             predicates.add(criteriaBuilder.equal(motoJoin.get("year"), search.getMotoYear()));
+        }
+        if (search.getPaymentMethod() != null){
+            Expression<Collection<PaymentMethod>> expression = root.get("paymentMethod");
+        }
+        if (search.getTransactionId() != null){
+            predicates.add(criteriaBuilder.like(root.get("%transactionId%"), "%"+search.getTransactionId()+"%"));
+        }
+        if (search.getDiscount() != null){
+            predicates.add(criteriaBuilder.equal(root.get("discount"), search.getDiscount()));
+        }
+        if (search.getDiscountTo() != null){
+            predicates.add(criteriaBuilder.lessThan(root.get("discount"), search.getDiscountTo()));
+        }
+        if (search.getDiscountFrom() != null){
+            predicates.add(criteriaBuilder.greaterThan(root.get("discount"), search.getDiscountFrom()));
+        }
+        if (search.getLocation() != null){
+            predicates.add(criteriaBuilder.like(root.get("%location%"), "%"+search.getLocation()+"%"));
         }
 
 

@@ -2,6 +2,7 @@ package com.example.VehicleStore.controller.rental;
 
 import com.example.VehicleStore.dto.pagination.Pagination;
 import com.example.VehicleStore.dto.rental.ApiRental;
+import com.example.VehicleStore.entity.enums.PaymentMethod;
 import com.example.VehicleStore.entity.items.car.Car;
 import com.example.VehicleStore.entity.items.car.CarBrand;
 import com.example.VehicleStore.entity.items.moto.MotoBrand;
@@ -20,7 +21,6 @@ import com.example.VehicleStore.service.service.rental.RentalService;
 import com.example.VehicleStore.service.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -41,41 +41,89 @@ public class RentalController {
 
 
     @PostMapping("/rental")
-    public void saveOrUpdateRental(@RequestBody @Valid ApiRental apiRental){
+    public void saveOrUpdateRental(@RequestBody @Valid ApiRental apiRental) {
         final Rental rental;
 
-        if (apiRental.getId() == null){
+
+        if (apiRental.getId() == null) {
             rental = new Rental();
-        }else {
+            rental.setRentalStatus(RentalStatus.PENDING);
+        } else {
             rental = rentalService.findById(apiRental.getId());
-            if (rental == null){
-                throw new NotFoundException("Rental not found");
+            if (rental == null) {
+                throw new NotFoundException("Rental not found.");
+            }
+
+
+            if (rental.getRentalStatus() == RentalStatus.COMPLETED || rental.getRentalStatus() == RentalStatus.CANCELED) {
+                throw new IllegalStateException("Cannot modify rental with status: " + rental.getRentalStatus());
             }
         }
+
+
+        User client = userService.findById(apiRental.getClient().getId());
+        if (client == null) {
+            throw new NotFoundException("Client not found.");
+        }
+        rental.setClient(client);
+
+
         if (apiRental.getCar() != null) {
-            rental.setCar(carService.findById(apiRental.getCar().getId()));
+            Car car = carService.findById(apiRental.getCar().getId());
+            if (car == null) {
+                throw new NotFoundException("Car not found.");
+            }
+            rental.setCar(car);
+            rental.setMotorcycle(null);
+        } else if (apiRental.getMotorcycle() != null) {
+            Motorcycle motorcycle = motoService.findById(apiRental.getMotorcycle().getId());
+            if (motorcycle == null) {
+                throw new NotFoundException("Motorcycle not found.");
+            }
+            rental.setMotorcycle(motorcycle);
+            rental.setCar(null);
+        } else {
+            throw new IllegalArgumentException("Either car or motorcycle must be provided.");
         }
-        if (apiRental.getMotorcycle() != null){
-            rental.setMotorcycle(motoService.findById(apiRental.getMotorcycle().getId()));
+
+
+        if (apiRental.getStartDate() == null || apiRental.getReturnDate() == null) {
+            throw new IllegalArgumentException("Start date and return date must be provided.");
         }
-        if (apiRental.getClient() != null){
-            rental.setClient(userService.findById(apiRental.getClient().getId()));
+
+        if (apiRental.getStartDate().isAfter(apiRental.getReturnDate())) {
+            throw new IllegalArgumentException("Start date cannot be after return date.");
         }
-        if (apiRental.getRentalPrice() != null) {
-            rental.setRentalPrice(apiRental.getRentalPrice());
+
+        rental.setStartDate(apiRental.getStartDate());
+        rental.setReturnDate(apiRental.getReturnDate());
+        rental.setExpirationDate(apiRental.getStartDate().plusDays(10));
+
+
+        if (apiRental.getRentalPrice() == null || apiRental.getRentalPrice().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Rental price must be greater than zero.");
         }
-        if (apiRental.getRentalStatus() != null) {
-            rental.setRentalStatus(apiRental.getRentalStatus());
+        rental.setRentalPrice(apiRental.getRentalPrice());
+
+
+        if (apiRental.getPaymentMethod() != null) {
+            rental.setPaymentMethod(apiRental.getPaymentMethod());
         }
-        if (apiRental.getStartDate() != null) {
-            rental.setStartDate(apiRental.getStartDate());
+
+
+        rental.setTransactionId(apiRental.getTransactionId());
+
+
+        if (apiRental.getDiscount() != null) {
+            if (apiRental.getDiscount().compareTo(BigDecimal.ZERO) < 0) {
+                throw new IllegalArgumentException("Discount cannot be negative.");
+            }
+            rental.setDiscount(apiRental.getDiscount());
         }
-        if (apiRental.getReturnDate() != null) {
-            rental.setReturnDate(apiRental.getReturnDate());
-        }
-        if (apiRental.getExpirationDate() != null) {
-            rental.setExpirationDate(apiRental.getExpirationDate());
-        }
+
+
+        rental.setLocation(apiRental.getLocation());
+
 
         rentalService.save(rental);
     }
@@ -113,6 +161,12 @@ public class RentalController {
             @RequestParam(required = false) Long motoBrandId,
             @RequestParam(required = false) Integer carYear,
             @RequestParam(required = false) Integer motoYear,
+            @RequestParam(required = false) PaymentMethod paymentMethod,
+            @RequestParam(required = false) String transactionId,
+            @RequestParam(required = false) BigDecimal discount,
+            @RequestParam(required = false) BigDecimal discountTo,
+            @RequestParam(required = false) BigDecimal discountFrom,
+            @RequestParam(required = false) String location,
             @RequestParam(required = false) RentalSort sort,
             Pagination pagination
             ){
@@ -132,7 +186,13 @@ public class RentalController {
                 .setRentalPriceFrom(rentalPriceFrom)
                 .setRentalStatus(rentalStatus)
                 .setCarYear(carYear)
-                .setMotoYear(motoYear);
+                .setMotoYear(motoYear)
+                .setPaymentMethod(paymentMethod)
+                .setTransactionId(transactionId)
+                .setDiscount(discount)
+                .setDiscountTo(discountTo)
+                .setDiscountFrom(discountFrom)
+                .setLocation(location);
 
         if (search.getCar() != null){
             final Car car = carService.findById(carId);

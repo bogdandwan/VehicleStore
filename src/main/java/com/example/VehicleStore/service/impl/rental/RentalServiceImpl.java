@@ -59,6 +59,9 @@ public class RentalServiceImpl implements RentalService {
             case CLIENT_NAME_ASC, CLIENT_NAME_DESC -> "client.name";
             case CAR_BRAND_ASC, CAR_BRAND_DESC -> "car.brand";
             case MOTORCYCLE_BRAND_ASC, MOTORCYCLE_BRAND_DESC -> "motorcycle.brand";
+            case DISCOUNT_ASC, DISCOUNT_DESC -> "discount";
+            case LOCATION_ASC, LOCATION_DESC -> "location";
+            case PAYMENT_METHOD_ASC, PAYMENT_METHOD_DESC -> "paymentMethod";
             default -> "id";
         };
         return Sort.by(asc ? Sort.Direction.ASC : Sort.Direction.DESC, property);

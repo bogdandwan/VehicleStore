@@ -3,6 +3,7 @@ package com.example.VehicleStore.dto.rental;
 import com.example.VehicleStore.dto.car.ApiCar;
 import com.example.VehicleStore.dto.moto.ApiMoto;
 import com.example.VehicleStore.dto.user.ApiUser;
+import com.example.VehicleStore.entity.enums.PaymentMethod;
 import com.example.VehicleStore.entity.rental.Rental;
 import com.example.VehicleStore.entity.rental.enums.RentalStatus;
 import lombok.Data;
@@ -25,6 +26,10 @@ public class ApiRental {
     private LocalDate expirationDate;
     private BigDecimal rentalPrice;
     private RentalStatus rentalStatus;
+    private PaymentMethod paymentMethod;
+    private String transactionId;
+    private BigDecimal discount;
+    private String location;
 
 
     public ApiRental(Rental rental){
@@ -34,6 +39,10 @@ public class ApiRental {
         expirationDate = rental.getExpirationDate();
         rentalPrice = rental.getRentalPrice();
         rentalStatus = rental.getRentalStatus();
+        paymentMethod = rental.getPaymentMethod();
+        transactionId = rental.getTransactionId();
+        discount = rental.getDiscount();
+        location = rental.getLocation();
 
         if (rental.getCar() != null){
             car = new ApiCar(rental.getCar());

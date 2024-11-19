@@ -2,8 +2,9 @@ package com.example.VehicleStore.entity.rental.enums;
 
 public enum RentalStatus {
 
-    ACTIVE,
+    PENDING,
     COMPLETED,
-    CANCELED
+    CANCELED,
+    ACTIVE
 
 }

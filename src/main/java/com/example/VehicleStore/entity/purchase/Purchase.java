@@ -2,6 +2,9 @@ package com.example.VehicleStore.entity.purchase;
 
 import com.example.VehicleStore.entity.items.car.Car;
 import com.example.VehicleStore.entity.items.moto.Motorcycle;
+import com.example.VehicleStore.entity.enums.PaymentMethod;
+import com.example.VehicleStore.entity.purchase.enums.PurchaseStatus;
+import com.example.VehicleStore.entity.purchase.enums.PurchaseType;
 import com.example.VehicleStore.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -26,6 +29,10 @@ public class Purchase {
     @JoinColumn(name = "client_id")
     private User client;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private User seller;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;
@@ -44,20 +51,24 @@ public class Purchase {
     @Column(name = "status", nullable = false)
     private PurchaseStatus status;
 
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "payment_method")
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Column(name = "transaction_id")
+    private String transactionId;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-    }
+    @Column(name = "discount")
+    private BigDecimal discount;
 
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    @Column(name = "purchase_type")
+    @Enumerated(EnumType.STRING)
+    private PurchaseType purchaseType;
+
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "deletion_time")
+    private LocalDateTime deletionTime;
 
 }

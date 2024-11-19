@@ -1,5 +1,6 @@
 package com.example.VehicleStore.entity.rental;
 
+import com.example.VehicleStore.entity.enums.PaymentMethod;
 import com.example.VehicleStore.entity.items.car.Car;
 import com.example.VehicleStore.entity.items.moto.Motorcycle;
 import com.example.VehicleStore.entity.rental.enums.RentalStatus;
@@ -29,11 +30,11 @@ public class Rental {
     private User client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id", nullable = false)
+    @JoinColumn(name = "car_id")
     private Car car;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "motorcycle_id", nullable = false)
+    @JoinColumn(name = "motorcycle_id")
     private Motorcycle motorcycle;
 
     @Column(name = "start_date", nullable = false)
@@ -49,9 +50,22 @@ public class Rental {
     @Column(name = "rental_price", nullable = false)
     private BigDecimal rentalPrice;
 
+    @Column(name = "payment_method")
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    @Column(name = "transaction_id")
+    private String transactionId;
+
     @Column(name = "rental_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private RentalStatus rentalStatus;
+
+    @Column(name = "discount")
+    private BigDecimal discount;
+
+    @Column(name = "location")
+    private String location;
 
     @Column(name = "deletion_time")
     private LocalDateTime deletionTime;
