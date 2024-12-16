@@ -16,4 +16,6 @@ public interface PurchaseService {
     List<Purchase> findAll(PurchaseSearch search, Pagination pagination, PurchaseSort sort);
 
     void softDelete(Long id);
+
+    List<Purchase> findAll();
 }

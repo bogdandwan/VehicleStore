@@ -16,4 +16,6 @@ public interface RentalService {
     List<Rental> findAll(RentalSearch search, Pagination pagination, RentalSort sort);
 
     void softDelete(Long id);
+
+    List<Rental> findAll();
 }

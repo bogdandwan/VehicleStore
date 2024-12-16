@@ -45,6 +45,11 @@ public class RentalServiceImpl implements RentalService {
         }
     }
 
+    @Override
+    public List<Rental> findAll() {
+        return rentalRepository.findAll();
+    }
+
     private Sort buildSort(RentalSort sort) {
         if (sort == null) {
             return Sort.by(Sort.Direction.ASC, "id");
