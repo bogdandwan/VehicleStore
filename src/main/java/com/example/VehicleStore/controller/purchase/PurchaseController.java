@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RestController
 @RequiredArgsConstructor
 public class PurchaseController {
 
@@ -240,7 +241,7 @@ public class PurchaseController {
 
 
 
-    @GetMapping("/purchase/{id}")
+    @DeleteMapping("/purchase/{id}")
     public void deletePurchase(@PathVariable Long id){
         purchaseService.softDelete(id);
     }
